@@ -1,0 +1,18 @@
+ N1M N2M  N3M   NSST(>1=RK,else AB) NWRIT NREAD 
+ 64 64 64  3                0  1
+ NTST   TPRINT       TPIN      TMAX     WALLTIMEMAX (hours)
+ 100000     1000       1e-0      10.0      10.0
+ ALX3D      ISTR3   STR3 
+ 1.0000       6     25
+ REXT1 REXT2 
+ 1.0   1.0   
+   RA   PRA      DT      RESID    CFLMAX
+ 1e+6  1.0   1e-6   1.e-2    1.2
+ TSTA  STAREAD
+ 00    0
+ inslws   inslwn 
+  1          1   
+ IDTV(0=dt fisso,1=var.)     DTMAX(per dt var.)   CFLLIM(per dt fisso)
+   1                         0.1                1.0
+ TFRAME
+ 0.02

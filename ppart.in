@@ -1,0 +1,9 @@
+ NPOINTPART TIME ON     IRESETPART(0-no,1-yes)  TOUTPPART
+ 10     0.0         1                        0.05
+ 1/FROUDE       PART1_DIAM          RHO_PART1/RHO_F RHO_PART2/RHO_F PART1/PART2
+ 0.0d0          1.29d-5             1.0d6           1.0d-2          0.5
+ LX_IN/XLEN      LY_IN/YLEN         LZ_IN/ZLEN  
+ 0.20            0.20               0.20 
+ LX_OUT/XLEN     LY_OUT/YLEN        LZ_OUT/ZLEN  
+ 0.80            0.80               0.80
+
