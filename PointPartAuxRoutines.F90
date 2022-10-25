@@ -74,6 +74,7 @@
       subroutine interpol(pos,bubind,inp,qInt)
 
       USE param
+      use local_arrays, only : temp
       use local_aux
       USE pointparticle
       IMPLICIT NONE
@@ -105,6 +106,7 @@
          qBox(inb,1) = vxc(ist+li,jst+lj,kst+lk)
          qBox(inb,2) = vyc(ist+li,jst+lj,kst+lk)
          qBox(inb,3) = vzc(ist+li,jst+lj,kst+lk)
+         qBox(inb,4) = temp(ist+li,jst+lj,kst+lk)
 
          inb=inb+1
 
@@ -143,6 +145,15 @@
                   + posp(1)*(1-posp(2))*(1-posp(3))*qBox(7,3)  &
                   + (1-posp(1))*(1-posp(2))*(1-posp(3))*qBox(8,3) 
  
+!     Temperature
+      qInt(4)=posp(1)*posp(2)*posp(3)*qBox(1,4)  &
+                  + (1-posp(1))*posp(2)*posp(3)*qBox(2,4)  &
+                  + posp(1)*(1-posp(2))*posp(3)*qBox(3,4)  &
+                  + (1-posp(1))*(1-posp(2))*posp(3)*qBox(4,4)  &
+                  + posp(1)*posp(2)*(1-posp(3))*qBox(5,4)  &
+                  + (1-posp(1))*posp(2)*(1-posp(3))*qBox(6,4)  &
+                  + posp(1)*(1-posp(2))*(1-posp(3))*qBox(7,4)  &
+                  + (1-posp(1))*(1-posp(2))*(1-posp(3))*qBox(8,4) 
 
       return
       end
@@ -242,16 +253,18 @@
 !     Allocate particle parameters
 
       !-------- Now allocate particle parameters ---------
-      call AllocateReal2DArray(xp,1,Npointpart,1,3)
-      call AllocateReal2DArray(xpo,1,Npointpart,1,3)
+      call AllocateReal2DArray(xp,1,Npointpart,1,4)
+      call AllocateReal2DArray(xpo,1,Npointpart,1,4)
 
       call AllocateReal1DArray(vxp,1,Npointpart)
       call AllocateReal1DArray(vyp,1,Npointpart)
       call AllocateReal1DArray(vzp,1,Npointpart)
+      call AllocateReal1DArray(dtempp,1,Npointpart)
 
       call AllocateReal1DArray(vxpo,1,Npointpart)
       call AllocateReal1DArray(vypo,1,Npointpart)
       call AllocateReal1DArray(vzpo,1,Npointpart)
+      call AllocateReal1DArray(dtemppo,1,Npointpart)
 
       call AllocateReal2DArray(aap,1,Npointpart,1,3)
 
@@ -287,6 +300,7 @@
       call AllocateReal1DArray(gammap,1,Npointpart)
       call AllocateReal1DArray(stokes,1,Npointpart)
       call AllocateReal1DArray(renp,1,Npointpart)
+      call AllocateReal1DArray(temptime,1,Npointpart)
 
       return
       end

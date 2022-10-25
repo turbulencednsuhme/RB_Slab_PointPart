@@ -169,6 +169,10 @@
       vyp(inp)=vyn1
       vzp(inp)=vzn1
 
+!     --------  Calculate particle temperature change ---
+
+      dtempp(inp)=(qInt(4)-xp(inp,4))/temptime(inp)
+
       if(istwoway.eq.1) then
 !     -----------------------------------------------------------------
 !     ================================================================

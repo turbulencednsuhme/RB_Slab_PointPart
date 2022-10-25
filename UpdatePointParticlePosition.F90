@@ -11,7 +11,8 @@
 
       real      :: pos(3),qInt(7)
       real      :: vx_new,vy_new,vz_new
-      real      :: vx_old,vy_old,vz_old,rbub
+      real      :: vx_old,vy_old,vz_old
+      real      :: q_new, q_old
       integer   :: inp,merr
 
       
@@ -20,18 +21,22 @@
        xpo(inp,1) = xp(inp,1)
        xpo(inp,2) = xp(inp,2)
        xpo(inp,3) = xp(inp,3) 
+       xpo(inp,4) = xp(inp,4) 
 
        vx_new=vxp (inp); vy_new=vyp (inp); vz_new=vzp (inp)
        vx_old=vxpo(inp); vy_old=vypo(inp); vz_old=vzpo(inp)      
+       q_new = dtempp(inp); q_old = dtemppo(inp)
 
        if(ONparticle.eq.0)then
         xp(inp,1) = xp(inp,1) + dt*vx_new
         xp(inp,2) = xp(inp,2) + dt*vy_new
         xp(inp,3) = xp(inp,3) + dt*vz_new
+        xp(inp,4) = xp(inp,4) + dt*q_new
        else
         xp(inp,1) = xp(inp,1) + 0.5d0*dt*(3.d0*vx_new - vx_old)
         xp(inp,2) = xp(inp,2) + 0.5d0*dt*(3.d0*vy_new - vy_old)
         xp(inp,3) = xp(inp,3) + 0.5d0*dt*(3.d0*vz_new - vz_old)
+        xp(inp,4) = xp(inp,4) + 0.5d0*dt*(3.d0*q_new - q_old)
        end if
 
 !     =================================================================
@@ -48,8 +53,8 @@
        if(xp(inp,2).gt.rm(n2m)) xp(inp,2)=rm(1)+(xp(inp,2)-rm(n2m))
 
 !      Z-boundary check
-       if(xp(inp,3).lt.zm(1))   xp(inp,3)=zm(n3m)-(zm(1)-xp(inp,3))
-       if(xp(inp,3).gt.zm(n3m)) xp(inp,3)=zm(1)+(xp(inp,3)-zm(n3m))
+!       if(xp(inp,3).lt.zm(1))   xp(inp,3)=zm(n3m)-(zm(1)-xp(inp,3))
+!       if(xp(inp,3).gt.zm(n3m)) xp(inp,3)=zm(1)+(xp(inp,3)-zm(n3m))
 
 !     =================================================================
 !                Update old variables by all processors
@@ -58,6 +63,7 @@
        vxpo(inp)=vxp(inp)
        vypo(inp)=vyp(inp)
        vzpo(inp)=vzp(inp)
+       dtemppo(inp)=dtempp(inp)
 
       end do
      

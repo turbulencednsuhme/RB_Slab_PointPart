@@ -170,14 +170,14 @@
        real, dimension(:), allocatable :: vort1,vort2,vort3
        real, dimension(:), allocatable :: vorto1,vorto2,vorto3!
        real, dimension(:,:), allocatable :: xp,xpo
-       real, dimension(:), allocatable :: vxp,vyp,vzp    ! part vel new
-       real, dimension(:), allocatable :: vxpo,vypo,vzpo ! part vel old
+       real, dimension(:), allocatable :: vxp,vyp,vzp,dtempp    ! part vel new
+       real, dimension(:), allocatable :: vxpo,vypo,vzpo,dtemppo ! part vel old
        real, dimension(:), allocatable :: renp       ! part Re number
        real, dimension(:,:), allocatable :: aap      ! part acc
        real, dimension(:,:), allocatable :: facc_for,drag_for,lift_for
 
        real, dimension(:), allocatable :: dbd12,stokes
-       real, dimension(:), allocatable :: gammap
+       real, dimension(:), allocatable :: gammap,temptime
        real cpi(3), cpf(3)
 
        real :: usfroude,dbd,rhohat1,rhohat2

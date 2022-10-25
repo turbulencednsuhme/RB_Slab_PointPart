@@ -80,3 +80,8 @@ clean :
 	rm *.o 
 	rm *.mod
 
+veryclean :
+	rm *.o 
+	rm *.mod
+	rm *.h5 boutnp *.out
+

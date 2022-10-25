@@ -17,7 +17,7 @@
       if(ismaster) then
 
        dsetnam=trim('xp')
-       call HdfSerialReadReal2D(dsetnam,filename,xp,Npointpart,3)
+       call HdfSerialReadReal2D(dsetnam,filename,xp,Npointpart,4)
  
        dsetnam=trim('vxp')
        call HdfSerialReadReal1D(dsetnam,filename,vxp,Npointpart)
@@ -28,7 +28,7 @@
 
       end if
 
-      call MpiBcastReal2DArray(xp,Npointpart,3)
+      call MpiBcastReal2DArray(xp,Npointpart,4)
       call MpiBcastReal1DArray(vxp,Npointpart)
       call MpiBcastReal1DArray(vyp,Npointpart)
       call MpiBcastReal1DArray(vzp,Npointpart)
@@ -71,7 +71,7 @@
       call HdfCreateBlankFile(filename)
 
       dsetnam=trim('xp')
-      call HdfSerialWriteReal2D(dsetnam,filename,xp,Npointpart,3)
+      call HdfSerialWriteReal2D(dsetnam,filename,xp,Npointpart,4)
  
       dsetnam=trim('vxp')
       call HdfSerialWriteReal1D(dsetnam,filename,vxp,Npointpart)

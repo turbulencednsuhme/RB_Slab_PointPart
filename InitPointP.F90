@@ -16,7 +16,7 @@
       real      :: stokes1,stokes2,stokes3
       real      :: len_beg(3),len_end(3)
       real      :: pos(3),qInt(7)
-      real      :: dbub1,dbub2,Volbub,Volcell,volfr,tn
+      real      :: dbub1,dbub2,Volbub,Volcell,volfr,tn,tempt
       integer   :: bubind(6)
       integer   :: inp,seed,i,j,k,numpart1
 
@@ -35,6 +35,7 @@
       stokes3=0.31
 
       tn=0.0068
+      tempt=0.1
 
       numpart1=floor(dble(Npointpart*p1p2*2.0/3.0))
       if(ismaster) write(*,*)'Number of particles: ',numpart1,numpart1*2
@@ -45,14 +46,17 @@
          gammap(i) = gp1
          dbd12(i) = d1
          stokes(i) = stokes1*tn
+         temptime(i) = tempt
         else if(i.le.numpart1*2) then
          gammap(i) = gp2
          dbd12(i) = d2
          stokes(i) = stokes2*tn
+         temptime(i) = tempt
         else 
          gammap(i) = gp3
          dbd12(i) = d2
          stokes(i) = stokes3*tn
+         temptime(i) = tempt
         end if
        end do
       end if
@@ -60,6 +64,7 @@
       call MpiBcastReal1DArray(gammap,Npointpart)
       call MpiBcastReal1DArray(dbd12,Npointpart)
       call MpiBcastReal1DArray(stokes,Npointpart)
+      call MpiBcastReal1DArray(temptime,Npointpart)
       call MpiBarrier
 
 
