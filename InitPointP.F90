@@ -202,6 +202,8 @@
        write(*,757)volfr
 757    format(4x,'Volume fraction of bubbles (%): ',e10.3)
 
+       call part_read_continua
+
       end if
 
       END IF

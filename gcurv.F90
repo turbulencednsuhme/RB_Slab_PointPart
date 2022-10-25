@@ -184,6 +184,7 @@
 
         call WriteStats
         call mpi_write_continua
+        call part_write_continua(.false.)
 
         if(ismaster) then
            write(6,*) 'Restart file updated at exit'
@@ -207,6 +208,8 @@
 
       call WriteStats
       call mpi_write_continua
+      call part_write_continua(.false.)
+
       go to 167                                                         
 
   165 continue 
