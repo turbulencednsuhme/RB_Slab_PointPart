@@ -134,8 +134,8 @@
 
       call MpiBarrier
 
-      call MpiBcastReal1DArray(xp, 3*Npointpart)
-      call MpiBcastReal1DArray(xpo, 3*Npointpart)
+      call MpiBcastReal1DArray(xp, 4*Npointpart)
+      call MpiBcastReal1DArray(xpo, 4*Npointpart)
 
 
 !     -----------------------------------------------------------------
@@ -207,9 +207,9 @@
        write(*,757)volfr
 757    format(4x,'Volume fraction of bubbles (%): ',e10.3)
 
-       call part_read_continua
-
       end if
+
+      call part_read_continua
 
       END IF
 
