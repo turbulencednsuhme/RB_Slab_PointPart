@@ -22,24 +22,23 @@
       real Adn1                 ! Diagonal matrix entries
       real Aoxn1,Aoyn1,Aozn1    ! Off-diagonal matrix entries
       real RHSx,RHSy,RHSz
+      real qheatbub
 
       integer i,j,k,ist,jst,kst
-      integer dum,inb,li,lj,lk,istwoway
-      real fBox(8,3),matderpart(3),posp(3)
+      integer dum,inb,li,lj,lk
+      real fBox(8,4),ffrcpart(4),posp(3)
       real Volbub,dbub,Volcell
       real dummy
 
 !     print*,'Beginning bubblesolve'      
       aap(1:Npointpart,1:3) = 0.d0
 
-!      buoy_for(1:Npointpart,1:3) = 0.d0
+      buoy_for(1:Npointpart,1:3) = 0.d0
       facc_for(1:Npointpart,1:3) = 0.d0
       drag_for(1:Npointpart,1:3) = 0.d0
       lift_for(1:Npointpart,1:3) = 0.d0
 
       renp(:) = 0.d0
-
-      istwoway = 0
 
       do inp=1,Npointpart
 
@@ -96,7 +95,7 @@
       fdrag = gammap(inp)/stokes(inp)
 
       renp_temp=sqrt(((uxn-vxn)**2)+((uyn-vyn)**2)+((uzn-vzn)**2))* &
-                  (dbd12(inp)*alx3*ren)
+                  (dbd(inp)*alx3*ren)
       renp(inp)=renp_temp
 
 !     -------------------calculate [A]--------------------------------
@@ -130,11 +129,16 @@
 !!      lift_for(inp,3) = -((vxn-uxn)*omeyn   &
 !!                        - (vyn-uyn)*omexn)*gammap(inp)/3.d0
 
-!     --------------------calculate [Fn,Fn+1]----------------------------
+      buoy_for(inp,1) = 0.d0
+      buoy_for(inp,2) = 0.d0
+      buoy_for(inp,3) = usfroude
+
+!     --------------------calculate [Fn]----------------------------
 
       Forxn  =  facc_for(inp,1) + drag_for(inp,1) + lift_for(inp,1)
       Foryn  =  facc_for(inp,2) + drag_for(inp,2) + lift_for(inp,2)
-      Forzn  =  facc_for(inp,3) + drag_for(inp,3) + lift_for(inp,3)
+      Forzn  =  facc_for(inp,3) + drag_for(inp,3) + lift_for(inp,3) + &
+                buoy_for(inp,3)
 
 !     ------------ Calculate [RHS] implicitly ----------------------
 
@@ -163,17 +167,17 @@
             + RHSz*(Adn1**2+Aozn1**2))          &
             /(Adn1*(Adn1**2+Aoxn1**2+Aoyn1**2+Aozn1**2))
 
-!      print*,'Bubble Vel',vxn1,vyn1,vzn1
-
       vxp(inp)=vxn1
       vyp(inp)=vyn1
       vzp(inp)=vzn1
 
-!     --------  Calculate particle temperature change ---
+!     --------  Calculate particle temperature change --------
 
-      dtempp(inp)=(qInt(4)-xp(inp,4))/temptime(inp)
+      qheatbub = (qInt(4)-xp(inp,4))/temptime(inp)
 
-      if(istwoway.eq.1) then
+      dtempp(inp)=qheatbub
+
+      if(istwoway) then
 !     -----------------------------------------------------------------
 !     ================================================================
 !     two way coupling
@@ -199,31 +203,32 @@
 !     ---------------- Cell Volume -------------------------
       Volcell = 1.d0/(dx1*dx2*(zm(kst+1)-zm(kst)))
 
-      dbub=dbd12(inp)*alx3
+      dbub=dbd(inp)*alx3
       Volbub = 1.d0/6.d0*pi*dbub*dbub*dbub
 
 !      print*,'Volumes',Volbub,Volcell
 
 !     ------ Forcing term at particle position [units = velocity] ------
 
-!CS   Based on no-slip velocity (Stokes drag)
+!RO   Simply put negative force on the fluid, based on Horwitz, Mani
+!     (JCP, 2016)
 
-      matderpart(1) = (Volbub/Volcell)*((kalb1(inp)+kalbo1(inp))*0.5d0  &
-                            + (gammap(inp)-1.d0)*usfroude)
-      matderpart(2) = (Volbub/Volcell)*(kalb2(inp)+kalbo2(inp))*0.5d0
-      matderpart(3) = (Volbub/Volcell)*(kalb3(inp)+kalbo3(inp))*0.5d0
+      ffrcpart(1) = -(Volbub/Volcell)*Forxn*rhohat
+      ffrcpart(2) = -(Volbub/Volcell)*Foryn*rhohat
+      ffrcpart(3) = -(Volbub/Volcell)*Forzn*rhohat
+      ffrcpart(4) = -(Volbub/Volcell)*qheatbub
 
 !     ------------allocating all 3 forces to fBox------------
-      do dum=1,3
+      do dum=1,4
       
-       fBox(1,dum)=posp(1)*posp(2)*posp(3)*matderpart(dum)
-       fBox(2,dum)=(1-posp(1))*posp(2)*posp(3)*matderpart(dum)
-       fBox(3,dum)=posp(1)*(1-posp(2))*posp(3)*matderpart(dum)
-       fBox(4,dum)=(1-posp(1))*(1-posp(2))*posp(3)*matderpart(dum)
-       fBox(5,dum)=posp(1)*posp(2)*(1-posp(3))*matderpart(dum)
-       fBox(6,dum)=(1-posp(1))*posp(2)*(1-posp(3))*matderpart(dum)
-       fBox(7,dum)=posp(1)*(1-posp(2))*(1-posp(3))*matderpart(dum)
-       fBox(8,dum)=(1-posp(1))*(1-posp(2))*(1-posp(3))*matderpart(dum)
+       fBox(1,dum)=posp(1)*posp(2)*posp(3)*ffrcpart(dum)
+       fBox(2,dum)=(1-posp(1))*posp(2)*posp(3)*ffrcpart(dum)
+       fBox(3,dum)=posp(1)*(1-posp(2))*posp(3)*ffrcpart(dum)
+       fBox(4,dum)=(1-posp(1))*(1-posp(2))*posp(3)*ffrcpart(dum)
+       fBox(5,dum)=posp(1)*posp(2)*(1-posp(3))*ffrcpart(dum)
+       fBox(6,dum)=(1-posp(1))*posp(2)*(1-posp(3))*ffrcpart(dum)
+       fBox(7,dum)=posp(1)*(1-posp(2))*(1-posp(3))*ffrcpart(dum)
+       fBox(8,dum)=(1-posp(1))*(1-posp(2))*(1-posp(3))*ffrcpart(dum)
 
       end do
 !     -------------------------------------------------------
@@ -243,6 +248,10 @@
 !         Z-forcing
           for_zc_part(ist+li,jst+lj,kst+lk)=    &
           for_zc_part(ist+li,jst+lj,kst+lk) + fBox(inb,3)
+
+!         T-forcing
+          for_tc_part(ist+li,jst+lj,kst+lk)=    &
+          for_tc_part(ist+li,jst+lj,kst+lk) + fBox(inb,4)
     
 
           inb=inb+1

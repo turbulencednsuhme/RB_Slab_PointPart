@@ -39,12 +39,12 @@ OBJECTS = CalcMaxCFL.o CreateGrid.o SetTempBCs.o \
           CalcLocalDivergence.o CheckDivergence.o gcurv.o ExplicitTermsVX.o ExplicitTermsVY.o ExplicitTermsVZ.o \
           ExplicitTermsTemp.o ReadInitCond.o CreateInitialConditions.o \
           ImplicitAndUpdateVX.o ImplicitAndUpdateVY.o ImplicitAndUpdateVZ.o ImplicitAndUpdateTemp.o \
-          OpenLogs.o MpiAuxRoutines.o \
+          OpenLogs.o MpiAuxRoutines.o ReadPPartInput.o \
           matrix_transpose.o mpi_routines.o AuxiliaryRoutines.o InitTimeMarcherScheme.o \
-          papero.o param.o CorrectPressure.o InitPointP.o \
+          papero.o param.o CorrectPressure.o InitPointP.o PPForceVel.o \
           SolveImpVXY_Z.o SolveImpVXYZ_X.o SolveImpVXYZ_Y.o CalcPointPVel.o UpdatePointParticlePosition.o \
           StatRoutines.o PointPartAuxRoutines.o PointPartIO.o DeallocateArrays.o \
-          SolveImpVZ_Z.o SolveImpTemp_Z.o  DefineIBMObject.o ReadPPartInput.o \
+          SolveImpVZ_Z.o SolveImpTemp_Z.o  DefineIBMObject.o \
           tripvmy_line.o TimeMarcher.o CorrectVelocity.o GlobalQuantities.o InitPressureSolver.o Dump3DFiles.o \
           SolvePressureCorrection.o CalcDissipationNu.o InterpolateGrid.o LocateLargeDivergence.o CalcPlateNu.o \
 	  CalcVorticity.o CalcMaterialDerivative.o InitArrays.o ReadInputFile.o

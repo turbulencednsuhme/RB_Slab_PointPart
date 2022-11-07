@@ -157,12 +157,14 @@
        use param
        implicit none
        logical :: withppart = .false.
+       logical :: istwoway = .false.
        integer :: Npointpart,Onparticle
        integer :: iresetp
-       real  :: timeONp,p1p2,toutpp
+       integer :: twowayflag
+       real  :: timeONp,toutpp
 
-       real, allocatable, dimension(:,:,:) :: for_x_part,for_y_part,for_z_part
        real, allocatable, dimension(:,:,:) :: for_xc_part,for_yc_part,for_zc_part
+       real, allocatable, dimension(:,:,:) :: for_tc_part
        real, dimension(:), allocatable :: qVal1,qVal2,qVal3      ! for timestepping
        real, dimension(:), allocatable :: qValo1,qValo2,qValo3   ! for timestepping
        real, dimension(:), allocatable :: kalb1,kalb2,kalb3
@@ -175,12 +177,14 @@
        real, dimension(:), allocatable :: renp       ! part Re number
        real, dimension(:,:), allocatable :: aap      ! part acc
        real, dimension(:,:), allocatable :: facc_for,drag_for,lift_for
+       real, dimension(:,:), allocatable :: buoy_for
 
-       real, dimension(:), allocatable :: dbd12,stokes
+       real, dimension(:), allocatable :: dbd,stokes
        real, dimension(:), allocatable :: gammap,temptime
        real cpi(3), cpf(3)
 
-       real :: usfroude,dbd,rhohat1,rhohat2
+       real :: usfroude,dbd0,rhohat,stokp,thstokp
+       
 
  
       end module pointparticle

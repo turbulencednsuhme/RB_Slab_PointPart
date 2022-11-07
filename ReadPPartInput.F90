@@ -18,7 +18,9 @@
         read(15,301) dummy
         read(15,*) Npointpart,timeONp,iresetp,toutpp
         read(15,301) dummy
-        read(15,*) usfroude,dbd,rhohat1,rhohat2,p1p2
+        read(15,*) usfroude,stokp,rhohat,thstokp
+        read(15,301) dummy
+        read(15,*) twowayflag, dbd0
         read(15,301) dummy
         read(15,*) cpi(1),cpi(2),cpi(3)
         read(15,301) dummy
@@ -27,6 +29,7 @@
       close(15)
 
       if(Npointpart.gt.0) withppart = .true.
+      if(twowayflag.gt.0) istwoway = .true.
 
       return
       end

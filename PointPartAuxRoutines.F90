@@ -296,7 +296,7 @@
       call AllocateReal1DArray(vorto2,1,Npointpart)
       call AllocateReal1DArray(vorto3,1,Npointpart)
 
-      call AllocateReal1DArray(dbd12,1,Npointpart)
+      call AllocateReal1DArray(dbd,1,Npointpart)
       call AllocateReal1DArray(gammap,1,Npointpart)
       call AllocateReal1DArray(stokes,1,Npointpart)
       call AllocateReal1DArray(renp,1,Npointpart)

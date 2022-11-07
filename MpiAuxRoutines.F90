@@ -218,3 +218,79 @@
 
       return
       end subroutine FinalizeMPI
+!==============================================================================
+
+      subroutine MpiAddUpperGhost(q,n1,n2)
+      use mpih
+      use mpi_param, only: kstart,kend
+      implicit none
+      real,intent(inout) :: q(n1,n2,kstart-1:kend+1)
+      real :: buf(n1,n2,1)
+      integer,intent(in) :: n1,n2
+      integer :: mydata
+      integer :: my_down, my_up,tag
+      integer :: ic,jc
+
+      mydata= n1*n2
+
+      my_down= myid-1
+
+      my_up= myid+1
+
+      buf=0.0d0
+
+      if(myid .eq. 0) my_down= MPI_PROC_NULL
+      if(myid .eq. numtasks-1) my_up= MPI_PROC_NULL
+
+      tag=1
+
+      call MPI_ISEND(q(1,1,kstart-1),mydata,MDP, &
+       my_down, tag, MPI_COMM_WORLD, req(1), ierr)
+
+      call MPI_IRECV(buf(1,1,1), mydata, MDP, &
+       my_up,tag, MPI_COMM_WORLD, req(2), ierr)
+
+      call MPI_Waitall(2,req,status,ierr)
+
+      q(:,:,kend) = q(:,:,kend) + buf(:,:,1)
+
+      end subroutine MpiAddUpperGhost
+
+
+!==============================================================================
+
+      subroutine MpiAddLowerGhost(q,n1,n2)
+      use mpih
+      use mpi_param, only: kstart,kend
+      implicit none
+      real,intent(inout) :: q(n1,n2,kstart-1:kend+1)
+      real :: buf(n1,n2,1)
+      integer,intent(in) :: n1,n2
+      integer :: mydata
+      integer :: my_down, my_up,tag
+      integer :: ic,jc
+
+      mydata= n1*n2
+
+      my_down= myid-1
+
+      my_up= myid+1
+
+      buf=0.0d0
+
+      if(myid .eq. 0) my_down= MPI_PROC_NULL
+      if(myid .eq. numtasks-1) my_up= MPI_PROC_NULL
+
+      tag=1
+
+      call MPI_ISEND(q(1,1,kend),mydata,MDP, &
+       my_down, tag, MPI_COMM_WORLD, req(1), ierr)
+
+      call MPI_IRECV(buf(1,1,1), mydata, MDP, &
+       my_up,tag, MPI_COMM_WORLD, req(2), ierr)
+
+      call MPI_Waitall(2,req,status,ierr)
+
+      q(:,:,kstart-1) = q(:,:,kstart-1) + buf(:,:,1)
+
+      end subroutine MpiAddLowerGhost

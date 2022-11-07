@@ -92,12 +92,11 @@
       call update_upper_ghost(n1m,n2m,vorz)
 
 !CS   Now solve for velocity of particles
-      if(ONparticle.eq.1) call CalcPointPVel
+      if(ONparticle.eq.1) then
+       call CalcPointPVel
+       if(istwoway) call PPForceVel
+      end if 
 
-!CS   Now reset forcing
-       for_x_part(:,:,:)=0.d0
-       for_y_part(:,:,:)=0.d0
-       for_z_part(:,:,:)=0.d0
       end if
 
 !RO    Write to screen

@@ -12,57 +12,30 @@
 
       IMPLICIT NONE
 
-      real      :: gp1, gp2, d1, d2, gp3
-      real      :: stokes1,stokes2,stokes3
+      real      :: gp
       real      :: len_beg(3),len_end(3)
       real      :: pos(3),qInt(7)
-      real      :: dbub1,dbub2,Volbub,Volcell,volfr,tn,tempt
+      real      :: dbub,Volbub,Volcell,volfr
       integer   :: bubind(6)
-      integer   :: inp,seed,i,j,k,numpart1
+      integer   :: inp,seed,i,j,k
 
       call AllocatePointPArrays
 
-      gp1 = 3.d0/(1.d0+2.d0*rhohat1)
-      gp2 = 3.d0/(1.d0+2.d0*rhohat2)
-      d1 = dbd
-      d2 = sqrt(gp2/gp1)*d1
+      gp = 3.d0/(1.d0+2.d0*rhohat)
 
-      gp1 = 0.75
-      gp2 = 3.0
-      gp3 = 1.0
-      stokes1=1.03
-      stokes2=1.64
-      stokes3=0.31
-
-      tn=0.0068
-      tempt=0.1
-
-      numpart1=floor(dble(Npointpart*p1p2*2.0/3.0))
-      if(ismaster) write(*,*)'Number of particles: ',numpart1,numpart1*2
+      if(ismaster) write(*,*)'Number of particles: ',Npointpart
 
       if(ismaster)then
        do i=1,Npointpart
-         if(i.le.numpart1) then
-         gammap(i) = gp1
-         dbd12(i) = d1
-         stokes(i) = stokes1*tn
-         temptime(i) = tempt
-        else if(i.le.numpart1*2) then
-         gammap(i) = gp2
-         dbd12(i) = d2
-         stokes(i) = stokes2*tn
-         temptime(i) = tempt
-        else 
-         gammap(i) = gp3
-         dbd12(i) = d2
-         stokes(i) = stokes3*tn
-         temptime(i) = tempt
-        end if
+         gammap(i) = gp
+         dbd(i) = dbd0
+         stokes(i) = stokp
+         temptime(i) = thstokp
        end do
       end if
  
       call MpiBcastReal1DArray(gammap,Npointpart)
-      call MpiBcastReal1DArray(dbd12,Npointpart)
+      call MpiBcastReal1DArray(dbd,Npointpart)
       call MpiBcastReal1DArray(stokes,Npointpart)
       call MpiBcastReal1DArray(temptime,Npointpart)
       call MpiBarrier
@@ -91,11 +64,8 @@
 753   format(4x,'Particle initiated in code --- No. of Bubbles: ',i8)
 
       seed = 361
-      dbub1=dbd12(1)*alx3
-      dbub2=dbd12(Npointpart)*alx3
-
-      Volbub = float(numpart1)*4.d0/3.d0*pi*dbub1**3/8.d0 &
-              +float(Npointpart-numpart1)*4.d0/3.d0*pi*dbub2**3/8.d0
+      dbub=dbd(1)*alx3
+      Volbub = float(Npointpart)*4.d0/3.d0*pi*dbub**3/8.d0
       Volcell = rext*rext2*alx3
       volfr = Volbub/Volcell
       volfr = 100.0*volfr
@@ -196,11 +166,9 @@
 756    format(4x,'Inverse Froude number: ',e10.3)
 
        seed = 361
-       dbub1=dbd12(1)*alx3
-       dbub2=dbd12(Npointpart)*alx3
+       dbub=dbd(1)*alx3
 
-       Volbub = float(numpart1)*4.d0/3.d0*pi*dbub1**3/8.d0 &
-               +float(Npointpart-numpart1)*4.d0/3.d0*pi*dbub2**3/8.d0
+       Volbub = float(Npointpart)*4.d0/3.d0*pi*dbub**3/8.d0
        Volcell = rext*rext2*alx3
        volfr = Volbub/Volcell
        volfr = 100.0*volfr
