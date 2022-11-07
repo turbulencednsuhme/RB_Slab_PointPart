@@ -216,7 +216,7 @@
       ffrcpart(1) = -(Volbub/Volcell)*Forxn*rhohat
       ffrcpart(2) = -(Volbub/Volcell)*Foryn*rhohat
       ffrcpart(3) = -(Volbub/Volcell)*Forzn*rhohat
-      ffrcpart(4) = -(Volbub/Volcell)*qheatbub
+      ffrcpart(4) = -(Volbub/Volcell)*qheatbub*rhohat*cppcpf
 
 !     ------------allocating all 3 forces to fBox------------
       do dum=1,4

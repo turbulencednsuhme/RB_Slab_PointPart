@@ -250,6 +250,11 @@
       call AllocateReal3DArray(matderyc,1,n1,1,n2,kstart-1,kend+1)
       call AllocateReal3DArray(matderzc,1,n1,1,n2,kstart-1,kend+1)
 
+      call AllocateReal3DArray(for_xc_part,1,n1,1,n2,kstart-1,kend+1)
+      call AllocateReal3DArray(for_yc_part,1,n1,1,n2,kstart-1,kend+1)
+      call AllocateReal3DArray(for_zc_part,1,n1,1,n2,kstart-1,kend+1)
+      call AllocateReal3DArray(for_tc_part,1,n1,1,n2,kstart-1,kend+1)
+
 !     Allocate particle parameters
 
       !-------- Now allocate particle parameters ---------

@@ -183,7 +183,7 @@
        real, dimension(:), allocatable :: gammap,temptime
        real cpi(3), cpf(3)
 
-       real :: usfroude,dbd0,rhohat,stokp,thstokp
+       real :: usfroude,dbd0,rhohat,stokp,thstokp,cppcpf
        
 
  

@@ -20,7 +20,7 @@
         read(15,301) dummy
         read(15,*) usfroude,stokp,rhohat,thstokp
         read(15,301) dummy
-        read(15,*) twowayflag, dbd0
+        read(15,*) twowayflag, dbd0, cppcpf
         read(15,301) dummy
         read(15,*) cpi(1),cpi(2),cpi(3)
         read(15,301) dummy
