@@ -3,7 +3,7 @@
  1/FROUDE        STOKES_NR      RHO/RHO_F   TH_STOKES
  0.0d0           0.0029         1.0d6       0.0028
  TWOWAY          PART_DIAM   
- 1               1.29d-5     
+ 0               1.29d-5     
  LX_IN/XLEN      LY_IN/YLEN         LZ_IN/ZLEN  
  0.20            0.20               0.20 
  LX_OUT/XLEN     LY_OUT/YLEN        LZ_OUT/ZLEN  
