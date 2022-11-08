@@ -8,14 +8,10 @@
       IMPLICIT NONE
       integer :: ic,jc,kc,im,jm,km
 
-      call MpiAddLowerGhost(for_xc_part,n1,n2)
-      call MpiAddLowerGhost(for_yc_part,n1,n2)
-      call MpiAddLowerGhost(for_zc_part,n1,n2)
-      call MpiAddLowerGhost(for_tc_part,n1,n2)
-      call MpiAddUpperGhost(for_xc_part,n1,n2)
-      call MpiAddUpperGhost(for_yc_part,n1,n2)
-      call MpiAddUpperGhost(for_zc_part,n1,n2)
-      call MpiAddUpperGhost(for_tc_part,n1,n2)
+      call MpiAddGhosts(for_xc_part,n1,n2)
+      call MpiAddGhosts(for_yc_part,n1,n2)
+      call MpiAddGhosts(for_zc_part,n1,n2)
+      call MpiAddGhosts(for_tc_part,n1,n2)
 
       call MpiBarrier
 
