@@ -444,10 +444,22 @@
 
 !RO   Write the grid information 
 
+      dims_grid(1)=n1m
+      call h5screate_simple_f(ndims, dims_grid, dspace_grid, hdf_error)
+
+      call h5dcreate_f(file_id, 'X_cordin', H5T_NATIVE_DOUBLE, &
+                      dspace_grid, dset_grid, hdf_error)
+
+      call h5dwrite_f(dset_grid, H5T_NATIVE_DOUBLE, tm(1:n1m), &
+             dims_grid,hdf_error)
+
+      call h5dclose_f(dset_grid, hdf_error)
+      call h5sclose_f(dspace_grid, hdf_error)
+
       dims_grid(1)=n2m
       call h5screate_simple_f(ndims, dims_grid, dspace_grid, hdf_error)
 
-      call h5dcreate_f(file_id, 'R_cordin', H5T_NATIVE_DOUBLE, &
+      call h5dcreate_f(file_id, 'Y_cordin', H5T_NATIVE_DOUBLE, &
                       dspace_grid, dset_grid, hdf_error)
 
       call h5dwrite_f(dset_grid, H5T_NATIVE_DOUBLE, rm(1:n2m), &
