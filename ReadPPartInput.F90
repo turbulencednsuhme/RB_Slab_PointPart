@@ -16,7 +16,7 @@
 
       open(unit=15,file='ppart.in',status='old')
         read(15,301) dummy
-        read(15,*) Npointpart,timeONp,iresetp,toutpp
+        read(15,*) Npointpart,iresetp,toutpp
         read(15,301) dummy
         read(15,*) usfroude,stokp,rhohat,thstokp
         read(15,301) dummy
