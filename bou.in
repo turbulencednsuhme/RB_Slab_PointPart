@@ -1,5 +1,5 @@
  N1M N2M  N3M   NSST(>1=RK,else AB) NWRIT NREAD 
- 64 64 64  3                0  1
+ 64 64 64  3                0  0
  NTST   TPRINT       TPIN      TMAX     WALLTIMEMAX (hours)
  100000     1000       1e-0      10.0      10.0
  ALX3D      ISTR3   STR3 
