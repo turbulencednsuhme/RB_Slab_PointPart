@@ -276,6 +276,8 @@
       call AllocateReal2DArray(facc_for,1,Npointpart,1,3)
       call AllocateReal2DArray(drag_for,1,Npointpart,1,3)
       call AllocateReal2DArray(lift_for,1,Npointpart,1,3)
+      call AllocateReal2DArray(buoy_for,1,Npointpart,1,3)
+
 
       call AllocateReal1DArray(qVal1,1,Npointpart)
       call AllocateReal1DArray(qVal2,1,Npointpart)
