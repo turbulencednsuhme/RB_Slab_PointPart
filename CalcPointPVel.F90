@@ -78,19 +78,21 @@
       kalb3(inp)=dmatInt(3)
 
 !     -----------------------------------------------------------------
-      uxn=qValo1(inp) ; uxn1=qVal1(inp) !Set old and new flow velocities
-      uyn=qValo2(inp) ; uyn1=qVal2(inp)
-      uzn=qValo3(inp) ; uzn1=qVal3(inp)
+      uxn1=qVal1(inp) 
+      uyn1=qVal2(inp)
+      uzn1=qVal3(inp)
 
-      omexn=vorto1(inp) ; omexn1=vort1(inp)
-      omeyn=vorto2(inp) ; omeyn1=vort2(inp)
-      omezn=vorto3(inp) ; omezn1=vort3(inp)
+      omexn=vort1(inp)
+      omeyn=vort2(inp)
+      omezn=vort3(inp)
 
-      kalbxn=kalbo1(inp) ; kalbxn1=kalb1(inp)
-      kalbyn=kalbo2(inp) ; kalbyn1=kalb2(inp)
-      kalbzn=kalbo3(inp) ; kalbzn1=kalb3(inp)
+      kalbxn=kalb1(inp)
+      kalbyn=kalb2(inp)
+      kalbzn=kalb3(inp)
       
-      vxn=vxpo(inp) ; vyn=vypo(inp) ; vzn=vzpo(inp)
+      vxn=vxp(inp)
+      vyn=vyp(inp)
+      vzn=vzp(inp)
 !     -----------------------------------------------------------------
       fdrag = gammap(inp)/stokes(inp)
 
