@@ -65,6 +65,19 @@
        vzpo(inp)=vzp(inp)
        dtemppo(inp)=dtempp(inp)
 
+
+       kalbo1(inp)=kalb1(inp)
+       kalbo2(inp)=kalb2(inp)
+       kalbo3(inp)=kalb3(inp)
+
+       qValo1(inp)=qVal1(inp)
+       qValo2(inp)=qVal2(inp)
+       qValo3(inp)=qVal3(inp)
+
+       vorto1(inp)=vort1(inp)
+       vorto2(inp)=vort2(inp)
+       vorto3(inp)=vort3(inp)
+
       end do
      
       return
