@@ -107,6 +107,9 @@
          qBox(inb,2) = vyc(ist+li,jst+lj,kst+lk)
          qBox(inb,3) = vzc(ist+li,jst+lj,kst+lk)
          qBox(inb,4) = temp(ist+li,jst+lj,kst+lk)
+         qBox(inb,5) = vorx(ist+li,jst+lj,kst+lk)
+         qBox(inb,6) = vory(ist+li,jst+lj,kst+lk)
+         qBox(inb,7) = vorz(ist+li,jst+lj,kst+lk)
 
          inb=inb+1
 
@@ -154,6 +157,37 @@
                   + (1-posp(1))*posp(2)*(1-posp(3))*qBox(6,4)  &
                   + posp(1)*(1-posp(2))*(1-posp(3))*qBox(7,4)  &
                   + (1-posp(1))*(1-posp(2))*(1-posp(3))*qBox(8,4) 
+
+!     X-vorticity
+      qInt(5)=      posp(1)*posp(2)*posp(3)*qBox(1,5)  &
+                  + (1-posp(1))*posp(2)*posp(3)*qBox(2,5)  &
+                  + posp(1)*(1-posp(2))*posp(3)*qBox(3,5)  &
+                  + (1-posp(1))*(1-posp(2))*posp(3)*qBox(4,5)  &
+                  + posp(1)*posp(2)*(1-posp(3))*qBox(5,5)  &
+                  + (1-posp(1))*posp(2)*(1-posp(3))*qBox(6,5)  &
+                  + posp(1)*(1-posp(2))*(1-posp(3))*qBox(7,5)  &
+                  + (1-posp(1))*(1-posp(2))*(1-posp(3))*qBox(8,5)
+
+!     Y-vorticity
+      qInt(6)=      posp(1)*posp(2)*posp(3)*qBox(1,6)  &
+                  + (1-posp(1))*posp(2)*posp(3)*qBox(2,6)  &
+                  + posp(1)*(1-posp(2))*posp(3)*qBox(3,6)  &
+                  + (1-posp(1))*(1-posp(2))*posp(3)*qBox(4,6)  &
+                  + posp(1)*posp(2)*(1-posp(3))*qBox(5,6)  &
+                  + (1-posp(1))*posp(2)*(1-posp(3))*qBox(6,6)  &
+                  + posp(1)*(1-posp(2))*(1-posp(3))*qBox(7,6)  &
+                  + (1-posp(1))*(1-posp(2))*(1-posp(3))*qBox(8,6)
+
+!     Z-vorticity
+      qInt(7)=      posp(1)*posp(2)*posp(3)*qBox(1,7)  &
+                  + (1-posp(1))*posp(2)*posp(3)*qBox(2,7)  &
+                  + posp(1)*(1-posp(2))*posp(3)*qBox(3,7)  &
+                  + (1-posp(1))*(1-posp(2))*posp(3)*qBox(4,7)  &
+                  + posp(1)*posp(2)*(1-posp(3))*qBox(5,7)  &
+                  + (1-posp(1))*posp(2)*(1-posp(3))*qBox(6,7)  &
+                  + posp(1)*(1-posp(2))*(1-posp(3))*qBox(7,7)  &
+                  + (1-posp(1))*(1-posp(2))*(1-posp(3))*qBox(8,7)
+
 
       return
       end
