@@ -201,10 +201,9 @@
       posp(1)=1.d0-posp(1); posp(2)=1.d0-posp(2); posp(3)=1.d0-posp(3)
 
 !     ---------------- Cell Volume -------------------------
-      Volcell = 1.d0/(dx1*dx2*(zm(kst+1)-zm(kst)))
-
-      dbub=dbd(inp)*alx3
-      Volbub = 1.d0/6.d0*pi*dbub*dbub*dbub
+      Volcell = (zm(kst+1)-zm(kst))/(dx1*dx2)
+      dbub=dbd(inp)
+      Volbub = 6.d0*pi*dbub*dbub*dbub
 
 !      print*,'Volumes',Volbub,Volcell
 
