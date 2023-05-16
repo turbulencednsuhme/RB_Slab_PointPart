@@ -203,7 +203,7 @@
 !     ---------------- Cell Volume -------------------------
       Volcell = (zm(kst+1)-zm(kst))/(dx1*dx2)
       dbub=dbd(inp)
-      Volbub = 6.d0*pi*dbub*dbub*dbub
+      Volbub = (1.d0/6.d0)*pi*dbub*dbub*dbub
 
 !      print*,'Volumes',Volbub,Volcell
 
