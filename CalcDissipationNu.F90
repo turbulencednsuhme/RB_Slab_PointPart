@@ -74,7 +74,7 @@
                (h21+h12)**2+(h31+h13)**2+(h32+h23)**2
 
 
-       nu_mu = nu_mu+dissipte*g3rm(k)/ray
+       nu_mu = nu_mu+dissipte*g3rm(k)
 
        dissip1 = dissip1 + dissipte
 
@@ -102,9 +102,9 @@
        call MpiSumRealScalar(nu_mu)
       
       
-       volt = 1.d0/(real(n3m)*real(n1m)*real(n2m))
+      volt = 1.d0/(real(n3m)*real(n1m)*real(n2m))
       if(myid.eq.0) then
-      nu_mu = nu_mu*volt
+      nu_mu = nu_mu*volt+1
       nu_th = nu_th*volt 
       write(92,*) time,nu_mu,nu_th
       endif
