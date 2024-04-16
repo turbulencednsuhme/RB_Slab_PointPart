@@ -52,7 +52,7 @@
       call MpiMaxRealScalar(vmax(3))
 
       if(myid.eq.0) then
-      anusin=anusin*vol
+      anusin=1.d0 + dsqrt(pra*ray)*anusin*vol
       tempm=tempm*vol
       write(95,*) time, anusin, tempm
       endif
