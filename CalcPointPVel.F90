@@ -24,7 +24,7 @@
       real RHSx,RHSy,RHSz
       real qheatbub
 
-      integer i,j,k,ist,jst,kst
+      integer i,j,k,ist,jst,kst,kendp
       integer dum,inb,li,lj,lk
       real fBox(8,4),ffrcpart(4),posp(3)
       real Volbub,dbub,Volcell
@@ -37,8 +37,16 @@
       facc_for(1:Npointpart,1:3) = 0.d0
       drag_for(1:Npointpart,1:3) = 0.d0
       lift_for(1:Npointpart,1:3) = 0.d0
+      dtempp(1:Npointpart) = 0.d0
+      renp(:) = 1.d0
 
-      renp(:) = 0.d0
+      if(istwoway) then
+       for_xc_part=0.0
+       for_yc_part=0.0
+       for_zc_part=0.0
+       for_tc_part=0.0
+      end if
+
 
       do inp=1,Npointpart
 
@@ -56,7 +64,15 @@
       call indpos(pos,inp,bubind)
 
       ! Only specific processors will calculate particles
-      if(bubind(6).ge.kstart-1.and.bubind(6).le.kend-1)then
+     ! if(bubind(6).ge.kstart-1.and.bubind(6).le.kend-1)then
+if(kend.eq.n3m) then
+      kendp=n3m+1
+      else
+      kendp=kend
+      endif
+
+if(bubind(6).ge.kstart-1.and.bubind(6).le.kendp-1)then
+
 
       ! Interpolate velocity and vorticity onto bubble position
       call interpol(pos,bubind,inp,qInt)
@@ -122,16 +138,16 @@
       lift_for(inp,2) = 0.d0
       lift_for(inp,3) = 0.d0
 
-!!      lift_for(inp,1) = -((vyn-uyn)*omezn   &
-!!                        - (vzn-uzn)*omeyn)*gammap(inp)/3.d0
-!!      lift_for(inp,2) = -((vzn-uzn)*omexn   &
-!!                        - (vxn-uxn)*omezn)*gammap(inp)/3.d0 
-!!      lift_for(inp,3) = -((vxn-uxn)*omeyn   &
-!!                        - (vyn-uyn)*omexn)*gammap(inp)/3.d0
+  !    lift_for(inp,1) = -((vyn-uyn)*omezn   &
+   !                     - (vzn-uzn)*omeyn)*gammap(inp)/3.d0
+  !    lift_for(inp,2) = -((vzn-uzn)*omexn   &
+ !                       - (vxn-uxn)*omezn)*gammap(inp)/3.d0 
+ !     lift_for(inp,3) = -((vxn-uxn)*omeyn   &
+  !                      - (vyn-uyn)*omexn)*gammap(inp)/3.d0
 
       buoy_for(inp,1) = 0.d0
       buoy_for(inp,2) = 0.d0
-      buoy_for(inp,3) = usfroude
+      buoy_for(inp,3) = -usfroude
 
 !     --------------------calculate [Fn]----------------------------
 
@@ -216,7 +232,7 @@
       ffrcpart(2) = -(Volbub/Volcell)*Foryn*rhohat
       ffrcpart(3) = -(Volbub/Volcell)*Forzn*rhohat
       ffrcpart(4) = -(Volbub/Volcell)*qheatbub*rhohat*cppcpf
-
+!print*, "ffrcpart(1)=", ffrcpart(1),"ffrcpart(2)=",ffrcpart(2),"ffrcpart(3)=",ffrcpart(3)
 !     ------------allocating all 3 forces to fBox------------
       do dum=1,4
       
@@ -229,6 +245,7 @@
        fBox(7,dum)=posp(1)*(1-posp(2))*(1-posp(3))*ffrcpart(dum)
        fBox(8,dum)=(1-posp(1))*(1-posp(2))*(1-posp(3))*ffrcpart(dum)
 
+
       end do
 !     -------------------------------------------------------
       inb=1
@@ -240,24 +257,33 @@
           for_xc_part(ist+li,jst+lj,kst+lk)=    &
           for_xc_part(ist+li,jst+lj,kst+lk) + fBox(inb,1)
 
+!forxcpart=for_xc_part
+
 !         Y-forcing
           for_yc_part(ist+li,jst+lj,kst+lk)=    &
           for_yc_part(ist+li,jst+lj,kst+lk) + fBox(inb,2)
+
+!forycpart=for_yc_part
 
 !         Z-forcing
           for_zc_part(ist+li,jst+lj,kst+lk)=    &
           for_zc_part(ist+li,jst+lj,kst+lk) + fBox(inb,3)
 
+!forzcpart=for_zc_part
+
 !         T-forcing
           for_tc_part(ist+li,jst+lj,kst+lk)=    &
           for_tc_part(ist+li,jst+lj,kst+lk) + fBox(inb,4)
-    
+
+!fortcpart=for_tc_part
+
+ ! print*, 'for_xc_part=', for_xc_part,'for_yc_part=',for_yc_part,'for_zc_part=', for_zc_part
 
           inb=inb+1
           end do
         end do
       end do
-    
+
       end if    ! End istwoway
 !     ----------------------------------------------------------------------
 
@@ -295,8 +321,16 @@
       call MpiAllSumReal2D(facc_for,Npointpart,3)
       call MpiAllSumReal2D(drag_for,Npointpart,3)
       call MpiAllSumReal2D(lift_for,Npointpart,3)
+      call MpiAllSumReal2D(buoy_for,Npointpart,3) 
       call MpiAllSumReal1D(renp,Npointpart)
+      call MpiAllSumReal1D(dtempp,Npointpart,3)
+  
+      if(istwoway) then
+       call MpiAddGhosts(for_xc_part,n1,n2)
+       call MpiAddGhosts(for_yc_part,n1,n2)
+       call MpiAddGhosts(for_zc_part,n1,n2)
+       call MpiAddGhosts(for_tc_part,n1,n2)
+      end if
 
       return
       end
-!----------------------------------------------------------------------------------
